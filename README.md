@@ -46,7 +46,7 @@ A Python-based network traffic generator for simulating various protocols and co
 
 ### Windows Installation
 
-- **Install Python
+- **Install Python 3.11 or 3.12** (3.13 has NTLM issues)
   - Download from [Python.org](https://www.python.org/downloads/)
 - **Install Visual C++ Build Tools**
   - Download from [Microsoft Visual Studio](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
@@ -58,8 +58,21 @@ A Python-based network traffic generator for simulating various protocols and co
   ```
 
 - **For domain authentication:**
-  - Install MIT Kerberos for Windows
-  - Add to PATH: `C:\Program Files\MIT\Kerberos\bin`
+  
+  Download and install MIT Kerberos for Windows:
+
+  1. Go to [MIT Kerberos distribution](https://web.mit.edu/KERBEROS/dist/)
+  2. Download the 64-bit MSI installer
+  3. Install it with the default settings
+
+  Add the Kerberos bin directory to your PATH:
+
+  1. Right-click on Start → **System**
+  2. Click **Advanced system settings**
+  3. Click **Environment Variables**
+  4. Under **System variables**, find and edit **Path**
+  5. Add `C:\Program Files\MIT\Kerberos\bin`
+  6. Click **OK** on all windows
 
 ### Linux Installation
 
@@ -139,6 +152,26 @@ EOL'
 # Restart Samba
 sudo systemctl restart smbd
 ```
+
+### SSH and S/FTP Configuration
+
+Before proceeding with SSH and S/FTP traffic simulation, you **must manually check the SSH connection** to ensure proper SSH/SFTP communication. 
+
+- **Run this check manually before adding the SSH fingerprint**, otherwise, the SSH component of the script will not work. Use the following commands to verify the connection:
+
+```bash
+# SSH to your target machine and accept the SSH fingerprint manually
+ssh username@target_ip
+```
+
+- **For S/FTP**, use the following:
+
+```bash
+# S/FTP to your target machine to verify functionality
+sftp username@target_ip
+```
+
+Once you have verified the SSH/SFTP connection and accepted the fingerprint, you can proceed with adding it to the CSV configuration and running the script.
 
 ## Usage
 
@@ -223,6 +256,10 @@ ping server.domain.com
 ldp.exe
 # Connect to: server:389
 ```
+
+#### SSH/SFTP Issues
+
+- Ensure you have **manually verified and accepted the SSH/SFTP fingerprint** as explained in the [SSH and S/FTP Configuration](#ssh-and-sftp-configuration) section.
 
 ### Logging
 
