@@ -482,32 +482,33 @@ class NetworkTrafficSimulator:
         while self.running:
             try:
                 for target in self.targets:
-                    available_types = ['web', 'ssh', 'rdp', 'share', 'ftp', 'winrm']
+                    # Map protocols to their simulation types
+                    protocol = target['protocol']
                     
-                    if HAVE_LDAP and target.get('domain'):
-                        available_types.append('ldap')
-                    if HAVE_KERBEROS and HAVE_GSSAPI and target.get('domain'):
-                        available_types.append('kerberos')
-                    
-                    traffic_type = random.choice(available_types)
-                    
-                    if traffic_type == 'web':
+                    # Add web browsing simulation occasionally
+                    if random.random() < 0.2:  # 20% chance
                         self.simulate_web_browsing(['http://example.com', 'http://google.com'])
-                    elif traffic_type == 'ssh' and target['protocol'] == 'ssh':
+                        time.sleep(random.uniform(1, 3))
+
+                    # Process protocol-specific simulations
+                    if protocol == 'ssh':
                         self.simulate_ssh_connection(target)
-                    elif traffic_type == 'rdp' and target['protocol'] == 'rdp':
+                    elif protocol == 'rdp':
                         self.simulate_rdp_connection(target)
-                    elif traffic_type == 'share' and target['protocol'] == 'smb':
+                    elif protocol == 'smb':
                         self.simulate_network_share(target)
-                    elif traffic_type == 'ftp' and target['protocol'] in ['ftp', 'sftp']:
+                    elif protocol in ['ftp', 'sftp']:
                         self.simulate_ftp(target)
-                    elif traffic_type == 'winrm' and target['protocol'] == 'winrm':
+                    elif protocol == 'winrm':
                         self.simulate_winrm(target)
-                    elif traffic_type == 'ldap' and target.get('domain'):
+                    elif protocol == 'ldap' and HAVE_LDAP and target.get('domain'):
                         self.simulate_ldap_queries(target)
-                    elif traffic_type == 'kerberos' and target.get('domain'):
+                    elif protocol == 'kerberos' and HAVE_KERBEROS and HAVE_GSSAPI and target.get('domain'):
                         self.simulate_kerberos_auth(target)
-                    
+                    else:
+                        self.logger.warning(f"Unsupported protocol: {protocol}")
+                        continue
+
                     time.sleep(random.uniform(5, 15))
             except Exception as e:
                 self.logger.error(f"Simulation error: {str(e)}")
