@@ -46,7 +46,7 @@ A Python-based network traffic generator for simulating various protocols and co
 
 ### Windows Installation
 
-- **Install Python 3.11 or 3.12** (3.13 has NTLM issues)
+- **Install Python
   - Download from [Python.org](https://www.python.org/downloads/)
 - **Install Visual C++ Build Tools**
   - Download from [Microsoft Visual Studio](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
