@@ -481,16 +481,15 @@ class NetworkTrafficSimulator:
         """Main simulation loop"""
         while self.running:
             try:
+                # Add occasional web browsing simulation
+                if random.random() < 0.2:  # 20% chance
+                    self.simulate_web_browsing(['http://example.com', 'http://google.com'])
+                    time.sleep(random.uniform(1, 3))
+                
                 for target in self.targets:
-                    # Map protocols to their simulation types
-                    protocol = target['protocol']
+                    protocol = target['protocol'].lower()  # Get protocol from CSV
                     
-                    # Add web browsing simulation occasionally
-                    if random.random() < 0.2:  # 20% chance
-                        self.simulate_web_browsing(['http://example.com', 'http://google.com'])
-                        time.sleep(random.uniform(1, 3))
-
-                    # Process protocol-specific simulations
+                    # Process based on the protocol specified in CSV
                     if protocol == 'ssh':
                         self.simulate_ssh_connection(target)
                     elif protocol == 'rdp':
@@ -501,14 +500,11 @@ class NetworkTrafficSimulator:
                         self.simulate_ftp(target)
                     elif protocol == 'winrm':
                         self.simulate_winrm(target)
-                    elif protocol == 'ldap' and HAVE_LDAP and target.get('domain'):
+                    elif protocol == 'ldap' and HAVE_LDAP:
                         self.simulate_ldap_queries(target)
-                    elif protocol == 'kerberos' and HAVE_KERBEROS and HAVE_GSSAPI and target.get('domain'):
+                    elif protocol == 'kerberos' and HAVE_KERBEROS and HAVE_GSSAPI:
                         self.simulate_kerberos_auth(target)
-                    else:
-                        self.logger.warning(f"Unsupported protocol: {protocol}")
-                        continue
-
+                    
                     time.sleep(random.uniform(5, 15))
             except Exception as e:
                 self.logger.error(f"Simulation error: {str(e)}")
