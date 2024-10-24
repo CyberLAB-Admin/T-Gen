@@ -202,24 +202,29 @@ The CSV file requires the following columns:
 
 ```csv
 # Windows Domain Controller
+ip,protocol,username,password,port,share_path,domain,auth_method
 10.160.69.233,ldap,administrator,Password123,389,,tgen.com,NTLM
 10.160.69.233,winrm,administrator,Password123,5985,,tgen.com,
 
 # Windows File Server
+ip,protocol,username,password,port,share_path,domain,auth_method
 10.160.69.224,smb,administrator,Password123,445,\\10.160.69.224\SharedDrive,tgen.com,
 10.160.69.224,rdp,administrator,Password123,3389,,,
 
 # Linux Server
+ip,protocol,username,password,port,share_path,domain,auth_method
 192.168.1.100,ssh,linuxuser,Password123,22,,,
 192.168.1.100,sftp,linuxuser,Password123,22,,,
 192.168.1.100,smb,smbuser,Password123,445,\\192.168.1.100\SharedDrive,,
 
 # Multiple Services on One Machine
+ip,protocol,username,password,port,share_path,domain,auth_method
 10.160.69.225,winrm,administrator,Password123,5985,,tgen.com,
 10.160.69.225,rdp,administrator,Password123,3389,,,
 10.160.69.225,smb,administrator,Password123,445,\\10.160.69.225\SharedDrive,tgen.com,
 
 # FTP Server
+ip,protocol,username,password,port,share_path,domain,auth_method
 192.168.1.101,ftp,ftpuser,Password123,21,,,
 ```
 
